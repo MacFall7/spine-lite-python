@@ -1210,7 +1210,7 @@ wheels = [
 
 [[package]]
 name = "spine-lite"
-version = "0.1.0a0"
+version = "0.2.0a0"
 source = { editable = "." }
 dependencies = [
     { name = "pydantic" },
