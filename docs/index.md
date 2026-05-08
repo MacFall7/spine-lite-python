@@ -2,30 +2,38 @@
 
 Deterministic policy and effects runtime for LLM tool calls.
 
-A Python port of [M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite). Same closed effects taxonomy, same precedence rules, same posture state machine — typed, tested, and shipped as a `pip`-installable package.
+A Python port of [M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite). Same closed effects taxonomy, same precedence rules, same posture state machine — typed, tested, and shipped as a package you can `pip install`.
+
+[Get started](getting-started.md){ .md-button .md-button--primary }
+[API reference](reference/api.md){ .md-button }
+
+## What it does
+
+You hand it a tool call and a manifest of declared effects. It hands back a deterministic decision: which effects fire, what the dominant class is, and a structured receipt you can replay by SHA. Wire it in front of Claude Code's tool-use as a PreToolUse hook, or call the library directly from any Python process.
+
+The runtime is offline by design — no clocks, no randomness, no network, no LLM calls inside the runtime itself.
 
 ## Status
 
-Alpha. Phase 1 ships the scaffold, the closed effects taxonomy, and the public exception hierarchy. The classifier, posture state machine, hook adapter, and the rest of the CLI land in Phases 2 and 3.
+| Phase | Scope | Version | State |
+|-------|-------|---------|-------|
+| 1 | Scaffold, taxonomy, exceptions, CLI surface, CI matrix, docs | `v0.1.0a0` | Shipped |
+| 2 | Manifest schema, classifier with parity tests | `v0.2.0a0` | Pending |
+| 3 | Posture state machine, receipts, hook adapter, end-to-end | `v0.3.0a0` | Pending |
 
-## Install
+PyPI publish lands at the end of Phase 3. Until then, install from source — see [Getting Started](getting-started.md).
 
-PyPI release lands at the end of Phase 3. Until then, install from source:
+## Where to go
 
-```bash
-git clone https://github.com/MacFall7/spine-lite-python
-cd spine-lite-python
-uv venv
-uv sync --all-extras --dev
-```
+- New here? → [Getting Started](getting-started.md)
+- Mental model → [Concepts / Overview](concepts/overview.md)
+- The six effect classes → [Effects Taxonomy](concepts/effects-taxonomy.md)
+- Use the API today → [How-To / Use the API](how-to/use-the-api.md)
+- Wire into Claude Code → [How-To / Wire into Claude Code](how-to/wire-claude-code.md)
+- Public surface → [Reference / API](reference/api.md), [Reference / CLI](reference/cli.md), [Reference / Glossary](reference/glossary.md)
+- Why it's shaped this way → [Explanation / Architecture](explanation/architecture.md), [Invariants](explanation/invariants.md), [Design Rationale](explanation/design-rationale.md), [FAQ](explanation/faq.md)
+- What shipped when → [History / Phase 1](history/phase-1.md)
 
-## Use
+## License
 
-```python
-from spine_lite import Effect, most_restrictive
-
-most_restrictive({Effect.READ, Effect.NETWORK, Effect.WRITE})
-# <Effect.NETWORK: 'network'>
-```
-
-Read [Architecture](architecture.md) for the design and [API Reference](api.md) for the full surface.
+MIT. Maintained by Mac McFall under M87 Studio.

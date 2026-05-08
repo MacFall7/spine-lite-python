@@ -44,11 +44,29 @@ plugins:
 
 nav:
   - Home: index.md
-  - Architecture: architecture.md
-  - Porting Notes: porting-notes.md
-  - Design Rationale: design-rationale.md
-  - Claude Code Integration: integration-claude-code.md
-  - API Reference: api.md
+  - Getting Started: getting-started.md
+  - Concepts:
+      - Overview: concepts/overview.md
+      - Effects Taxonomy: concepts/effects-taxonomy.md
+      - Posture and Hooks: concepts/posture-and-hooks.md
+  - How-To:
+      - Use the API: how-to/use-the-api.md
+      - Wire into Claude Code: how-to/wire-claude-code.md
+      - Contribute: how-to/contribute.md
+      - Release: how-to/release.md
+  - Reference:
+      - API: reference/api.md
+      - CLI: reference/cli.md
+      - Exceptions: reference/exceptions.md
+      - Glossary: reference/glossary.md
+  - Explanation:
+      - Architecture: explanation/architecture.md
+      - Invariants: explanation/invariants.md
+      - Design Rationale: explanation/design-rationale.md
+      - Porting Notes: explanation/porting-notes.md
+      - FAQ: explanation/faq.md
+  - History:
+      - Phase 1: history/phase-1.md
 
 markdown_extensions:
   - admonition
