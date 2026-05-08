@@ -234,3 +234,54 @@ Begin from blueprint correction commit. Halt at exit gate.
 - This receipt entry.
 
 **Next:** Phase 2 functional commits begin (Posture → manifest → classifier → fixtures+tests → release+exit-receipt).
+
+---
+
+### Phase 2 Exit Receipt — 2026-05-08
+
+**Repo:** spine-lite-python branch `claude/setup-project-structure-3YeiT`, six commits ahead of `main`. Target tag: `v0.2.0a0`.
+**Duration:** ~2 hours (continuation of the same Claude Code Web session).
+
+**Tasks completed:**
+
+- **Blueprint correction (`111f34c`).** `MacFall7/M87-Spine-lite` reframed as a sibling project, not a parity target. CLAUDE.md mission rewritten; porting-notes.md restructured from "translation log" to "design history" with a Phase 2 opening entry recording the §9 halt and operator resolution; surgical edits across nine doc pages drop the stale TS-reference framing.
+- **Posture enum (`600d870`).** Closed StrEnum with four members pinned by `docs/concepts/posture-and-hooks.md`: `INTERACTIVE`, `AUTONOMOUS`, `DRY_RUN`, `LOCKED`. Added to `__all__`. Phase 3 will add the transition functions; the enum lands now so the manifest schema can validate posture constraints against a closed set.
+- **Manifest schema (`9ed313d`).** Pydantic v2 models `ToolDefinition` and `Manifest` (frozen, `extra="forbid"`). Effects and postures canonicalised on construction (deduplicated and sorted by enum-declaration order) for byte-stable JSON round-trip. `parse_manifest()` accepts dicts, JSON strings, or JSON bytes; wraps `ValidationError` as `ManifestError` with the original attached as `__cause__`. Tests cover canonicalisation, frozen-model immutability, schema rejection, and round-trip stability.
+- **Classifier (`67470ff`).** `classify(tool_call, manifest) -> Decision` is a pure function. `ToolCall` and `Decision` are frozen + slotted + kw-only dataclasses. `Decision` carries the canonical effects tuple, the dominant effect under `PRECEDENCE`, and a byte-stable rationale string. Tool-not-declared raises `ManifestError`. Phase 2 doesn't refine on the tool call's arguments — manifest is the spec.
+- **Fixtures + parity + hypothesis (`ef32a5f`).** Four authored fixtures in `tests/fixtures/`: `manifest_minimal.json`, `manifest_basic.json`, `manifest_full.json`, `decisions_basic.json`. Parametrized tests confirm every fixture loads and round-trips JSON byte-stably. Decision parity test walks each case in `decisions_basic.json` against `manifest_basic.json`. Hypothesis property tests at 1,000 examples each cover determinism, dominance, manifest fidelity, byte-stable rationale, manifest round-trip stability, and argument independence.
+- **Release (this commit).** `pyproject.toml` and `__init__.py` bumped to `0.2.0a0`. CHANGELOG `[0.2.0a0]` section added. README status grid updated. Phase 2 history page added. mkdocs nav extended.
+
+**Verification (local, in sandbox):**
+
+- `ruff check`: pass
+- `ruff format --check`: pass
+- `mypy --strict src tests`: pass, 16 source files clean
+- `pytest`: 99 / 99 passing
+- Coverage: 100% on every runtime module (45 → 106 statements; 0 misses)
+- `mkdocs build --strict`: pass
+- Hypothesis: 6 properties × 1,000 examples each, ~50 s total
+
+**Phase 2 exit gate:**
+
+| # | Item | State |
+|---|------|-------|
+| 1 | `manifest.py` 100% coverage | ✓ (36 stmts, 6 branches, 0 miss) |
+| 2 | `classifier.py` 100% coverage | ✓ (18 stmts, 0 miss) |
+| 3 | `posture.py` 100% coverage on enum scope | ✓ (7 stmts, 0 miss) |
+| 4 | Authored fixtures in `tests/fixtures/` | ✓ (4 files) |
+| 5 | Parametrized parity tests against fixtures | ✓ |
+| 6 | Hypothesis property tests, ≥ 1,000 examples each | ✓ (6 properties) |
+| 7 | mypy `--strict` clean | ✓ |
+| 8 | CI green on all 9 matrix cells | (pending push verification) |
+| 9 | CHANGELOG entry for `v0.2.0a0` | ✓ |
+| 10 | All commits in Conventional Commits format | ✓ |
+| 11 | This receipt | ✓ |
+
+10 of 11 verifiable in sandbox; CI verification on push remains operator-side per the established workflow.
+
+**Open items / halts:**
+
+- None. Phase 3 (posture transitions, receipt, hook, full CLI; target `v0.3.0a0`) is gated on operator go.
+- The PyPI publish that the blueprint marks for end of Phase 3 remains an explicit operator decision; no auto-publish.
+
+**Next:** Halt for Mac at the Phase 2 → Phase 3 transition. Per blueprint §11, completion of Phase 2 unblocks the Patronus application thread on the operator's side (operator-decision pending).

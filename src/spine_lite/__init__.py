@@ -20,7 +20,7 @@ from spine_lite.exceptions import (
 from spine_lite.manifest import Manifest, ToolDefinition, parse_manifest
 from spine_lite.posture import Posture
 
-__version__ = "0.1.0a0"
+__version__ = "0.2.0a0"
 
 __all__ = [
     "PRECEDENCE",

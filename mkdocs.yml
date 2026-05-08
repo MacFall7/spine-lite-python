@@ -67,6 +67,7 @@ nav:
       - FAQ: explanation/faq.md
   - History:
       - Phase 1: history/phase-1.md
+      - Phase 2: history/phase-2.md
 
 markdown_extensions:
   - admonition
