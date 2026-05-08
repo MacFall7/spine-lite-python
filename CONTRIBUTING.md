@@ -1,8 +1,10 @@
 # Contributing
 
+The quick-start. The full contributor guide lives at [docs/how-to/contribute.md](https://macfall7.github.io/spine-lite-python/how-to/contribute/).
+
 This repo is governed under M87 Studio. External PRs are welcome, but the closed six-class effects taxonomy and the public API surface are non-negotiable — proposals to change either need a written rationale on an issue before code lands.
 
-## Local setup
+## Setup
 
 ```bash
 git clone https://github.com/MacFall7/spine-lite-python
@@ -11,7 +13,7 @@ uv venv
 uv sync --all-extras --dev
 ```
 
-## Verification
+## Verify
 
 Before every commit:
 
@@ -25,34 +27,37 @@ Before every push, also:
 nox -s coverage docs
 ```
 
-Coverage must stay at or above 95% on every commit and at 100% on the modules a phase implements at its exit gate. Docs build with `--strict`.
+Coverage stays ≥ 95%; docs build with `--strict`.
 
-## Style
+If you don't have nox, the underlying tools work directly:
 
-- Python 3.11+. `from __future__ import annotations` at the top of every module.
-- `mypy --strict` clean. No `Any` without a comment explaining why.
+```bash
+uv run ruff check .
+uv run ruff format --check .
+uv run mypy src tests
+uv run pytest --cov=spine_lite --cov-fail-under=95
+uv run mkdocs build --strict
+```
+
+## Style at a glance
+
+- Python 3.11+. `from __future__ import annotations` everywhere.
+- `mypy --strict` clean. No `Any` without a justifying comment.
 - Google-style docstrings on every public symbol.
-- Frozen, slotted, kw-only dataclasses by default. Mutable only with explicit justification.
-- Conventional Commits: `feat:`, `fix:`, `docs:`, `chore:`, `test:`, `refactor:`, `ci:`. Subject ≤ 72 chars, imperative mood, no trailing period.
-- Direct prose. No marketing copy, no LLM boilerplate, no performative empathy.
+- Conventional Commits, subject ≤ 72 chars, imperative mood, no trailing period.
+- Direct prose. No marketing tone, no LLM boilerplate.
 
 ## Architecture rules
 
-The closed six-class effects taxonomy and the precedence ordering are the spec. The five core modules — `effects.py`, `classifier.py`, `posture.py`, `manifest.py`, `receipt.py` — are pure: no I/O, no timestamps, no randomness. I/O lives in `hook.py`, `cli.py`, and tests.
+The closed six-class effects taxonomy and the precedence ordering are the spec. The five pure modules (`effects.py`, `manifest.py`, `classifier.py`, `posture.py`, `receipt.py`) contain no I/O, no clocks, no randomness. I/O lives in `hook.py`, `cli.py`, and tests.
 
-## Tests
+If your change cannot be made within those rules, that's an issue for discussion — not a PR.
 
-`pytest` for everything. `hypothesis` for invariants and determinism. The TypeScript reference fixtures (added in Phase 2) are used as-is — no mocking. No network calls in tests; the runtime is offline by design.
+## Where to read more
 
-## Reviewing
-
-The build operates under explicit phase gates documented in `CLAUDE.md`. Reviews should focus on:
-
-1. Public API stability (anything in `__all__`).
-2. Determinism in the pure modules.
-3. Parity with the TypeScript reference where applicable.
-4. Test coverage on the modules touched.
-
-## Releases
-
-Versioning is SemVer with explicit phase tags: `0.1.0a0` (Phase 1), `0.2.0a0` (Phase 2), `0.3.0a0` (Phase 3). PyPI publishing is gated on a project-level sign-off, not on CI alone.
+- [Full contributor guide](https://macfall7.github.io/spine-lite-python/how-to/contribute/)
+- [Architecture](https://macfall7.github.io/spine-lite-python/explanation/architecture/)
+- [Invariants](https://macfall7.github.io/spine-lite-python/explanation/invariants/)
+- [Design Rationale](https://macfall7.github.io/spine-lite-python/explanation/design-rationale/)
+- [Release process](https://macfall7.github.io/spine-lite-python/how-to/release/)
+- [`CLAUDE.md`](CLAUDE.md) — repo governance for Claude Code sessions.
