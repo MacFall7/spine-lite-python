@@ -1,7 +1,7 @@
 """spine-lite: deterministic policy and effects runtime for LLM tool calls.
 
-Phase 1 surface. Subsequent phases extend ``__all__`` as the classifier,
-posture machine, and hook ship. See ``CLAUDE.md`` and ``docs/architecture.md``.
+Phase 2 surface. Subsequent phases extend ``__all__`` as the classifier and
+hook ship. See ``CLAUDE.md`` and ``docs/explanation/architecture.md``.
 """
 
 from __future__ import annotations
@@ -16,6 +16,7 @@ from spine_lite.exceptions import (
     PostureError,
     SpineLiteError,
 )
+from spine_lite.posture import Posture
 
 __version__ = "0.1.0a0"
 
@@ -25,6 +26,7 @@ __all__ = [
     "Effect",
     "HookError",
     "ManifestError",
+    "Posture",
     "PostureError",
     "SpineLiteError",
     "__version__",
