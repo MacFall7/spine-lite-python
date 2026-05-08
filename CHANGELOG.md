@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Added
+
+- `SECURITY.md` with vulnerability-reporting process, supported-version policy, and the runtime trust model.
+- Documentation site restructured into Diátaxis quadrants (Tutorial / How-To / Reference / Explanation) plus a History section. New pages: getting-started, concepts/{overview,effects-taxonomy,posture-and-hooks}, how-to/{use-the-api,wire-claude-code,contribute,release}, reference/{cli,exceptions,glossary}, explanation/{invariants,faq}, history/phase-1.
+- Iron-clad README with status grid, repository layout, and links into the docs site.
+
+### Changed
+
+- `docs/architecture.md`, `docs/design-rationale.md`, `docs/porting-notes.md`, `docs/integration-claude-code.md`, and `docs/api.md` moved under `docs/explanation/`, `docs/how-to/`, and `docs/reference/`.
+- `CONTRIBUTING.md` reduced to a quick-start that points at the long form in the docs site.
+
 ## [0.1.0a0] — 2026-05-08
 
 ### Added
