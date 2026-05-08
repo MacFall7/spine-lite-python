@@ -28,7 +28,7 @@ A thin I/O wrapper around the pipeline. Reads a hook payload from stdin, runs th
 
 ## Manifest
 
-The policy document for a tool. Declares the tool's name, signature, declared effects, and posture constraints. Validated as Pydantic v2 models. Phase 2 module: [`spine_lite.manifest`](api.md). Round-trips the TypeScript reference fixtures byte-for-byte after JSON normalisation.
+The policy document for a tool. Declares the tool's name, signature, declared effects, and posture constraints. Validated as Pydantic v2 models. Phase 2 module: [`spine_lite.manifest`](api.md). Round-trips authored fixtures byte-for-byte after JSON normalisation.
 
 ## `most_restrictive`
 

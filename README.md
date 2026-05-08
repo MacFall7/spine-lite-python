@@ -7,7 +7,7 @@
 
 Deterministic policy and effects runtime for LLM tool calls.
 
-A Python port of [M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite). Same closed effects taxonomy, same precedence rules, same posture state machine — typed, tested, packaged.
+Six-class effects taxonomy on state × boundary × reversibility axes. Ordinal precedence. Content-addressable receipts. Wires into Claude Code as a PreToolUse hook (Phase 3); usable anywhere you can shell out to a subprocess. Sibling project to [M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite) — see [Porting Notes](docs/explanation/porting-notes.md) for the relationship.
 
 ## What it does
 

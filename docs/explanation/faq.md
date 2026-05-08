@@ -6,7 +6,7 @@ Six lines that matter for safety review. `READ` vs. `WRITE` (did anything change
 
 ## Why is the taxonomy closed?
 
-A taxonomy that grows at runtime is a taxonomy that drifts. Adding a class would require updating the precedence ordering, the parity tests against the TypeScript reference, every consumer that exhaustively matches on `Effect`, and every receipt that hashed under the old ordering. The cost is real; the benefit (better fit for one new use case) is local. So: closed by default, with an explicit project-level process for extension.
+A taxonomy that grows at runtime is a taxonomy that drifts. Adding a class would require updating the precedence ordering, the parity tests, the porting-notes log, every consumer that exhaustively matches on `Effect`, and every receipt that hashed under the old ordering. The cost is real; the benefit (better fit for one new use case) is local. So: closed by default, with an explicit project-level process for extension.
 
 ## Why no LLM calls inside the runtime?
 
@@ -16,13 +16,13 @@ The runtime's job is to classify and decide. Calling a model to second-guess tha
 
 Receipts are content-addressable. Two operators replaying the same session see byte-identical receipts. That property only holds if the runtime is deterministic — same input → same output, every time. The cost is that wall-clock time can only enter at the I/O boundary (the hook); the benefit is that "what happened?" has a SHA-stable answer.
 
-## Why Python after TypeScript?
+## How does this relate to M87-Spine-lite?
 
-The TypeScript reference is the spec. The Python port is what you install in environments where Python is already the language of choice — Claude Code agents written in Python, internal CLIs, CI pipelines, Jupyter sessions. Both implementations target the same observable behaviour.
+[MacFall7/M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite) is a sibling project with a different scope: a governance framework for Claude Code shell commands, with a six-class taxonomy drawn on shell-vs-file lines and numeric risk-delta scores. `spine-lite-python` is broader (any LLM tool call, not just bash) and uses ordinal precedence rather than numeric scores. The two designs are categorically different, not relabelings of each other. See [Porting Notes](porting-notes.md) for the full story.
 
 ## Why Pydantic v2 for the manifest?
 
-Pydantic v2 is the de facto standard for typed Python schemas, has fast Rust-backed validation, and round-trips JSON cleanly. The TypeScript reference uses Zod; Pydantic v2 is the closest match in the Python ecosystem.
+Pydantic v2 is the de facto standard for typed Python schemas, has fast Rust-backed validation, and round-trips JSON cleanly. The frozen + extra-forbid model config gives us schema strictness without writing a custom validator.
 
 ## What happens when a tool call has no declared effects?
 

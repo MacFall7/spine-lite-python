@@ -2,7 +2,7 @@
 
 Deterministic policy and effects runtime for LLM tool calls.
 
-A Python port of [M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite). Same closed effects taxonomy, same precedence rules, same posture state machine — typed, tested, and shipped as a package you can `pip install`.
+Six-class effects taxonomy on state × boundary × reversibility axes. Ordinal precedence. Content-addressable receipts. Designed for any LLM tool call, not just bash. Sibling project to [M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite) — see [Porting Notes](explanation/porting-notes.md) for the relationship.
 
 [Get started](getting-started.md){ .md-button .md-button--primary }
 [API reference](reference/api.md){ .md-button }

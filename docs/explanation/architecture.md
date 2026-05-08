@@ -70,9 +70,11 @@ Adding a class is permitted but expensive. The process is in [Effects Taxonomy /
 
 The architecture stays the same across phases. Each phase fills in pure modules that adhere to the same purity contract.
 
-## Reference implementation
+## Sibling project
 
-The TypeScript reference lives at [MacFall7/M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite). Treat it as the spec for semantic behaviour. Where Python idiom diverges from TypeScript (typing, dataclass shape, exception names), prefer the Python form and document the call in [Porting Notes](porting-notes.md). Anything that changes observable behaviour is a divergence and needs project-level sign-off.
+[MacFall7/M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite) is a Python sibling project: a governance framework for Claude Code shell commands with a different six-class taxonomy drawn on shell-vs-file lines. It's informational and citable, not a parity target. See [Porting Notes](porting-notes.md) for the full relationship.
+
+`spine-lite-python`'s spec is canonical and lives in this repository: the architectural invariants in `CLAUDE.md`, the [Invariants](invariants.md) page, and the design rationale recorded as decisions are made.
 
 ## See also
 

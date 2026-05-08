@@ -17,7 +17,7 @@ The closed effects taxonomy and the public API are non-negotiable without projec
 
 - Open an issue first with a written rationale.
 - Wait for a HALT-format response from the project lead before sending a PR.
-- Expect to update the parity tests against the TypeScript reference and add a Porting Notes entry.
+- Expect to update the parity tests and add a Porting Notes entry.
 
 Without prior agreement, PRs that modify `__all__` or extend the `Effect` enum will be closed with a request to convert to an issue.
 
@@ -79,7 +79,7 @@ Coverage must be at or above 95% on every commit, and at 100% on the modules a p
 
 `pytest` for everything. `hypothesis` for invariants and determinism properties. Parametrize aggressively; one parametrized test beats six near-duplicates.
 
-The TypeScript reference fixtures arrive with Phase 2 — use them as-is. Don't mock them. Parity is the spec.
+Authored fixtures live in `tests/fixtures/` (Phase 2 onward). Use them as-is; don't mock. Round-trip parity with byte-stability is the spec.
 
 ```python
 import pytest
