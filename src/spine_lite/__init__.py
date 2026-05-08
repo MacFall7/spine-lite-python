@@ -18,7 +18,7 @@ from spine_lite.exceptions import (
     SpineLiteError,
 )
 from spine_lite.manifest import Manifest, ToolDefinition, parse_manifest
-from spine_lite.posture import Posture
+from spine_lite.posture import Disposition, Posture, evaluate, transition
 
 __version__ = "0.2.0a0"
 
@@ -26,6 +26,7 @@ __all__ = [
     "PRECEDENCE",
     "ClassificationError",
     "Decision",
+    "Disposition",
     "Effect",
     "HookError",
     "Manifest",
@@ -37,8 +38,10 @@ __all__ = [
     "ToolDefinition",
     "__version__",
     "classify",
+    "evaluate",
     "most_restrictive",
     "parse_manifest",
+    "transition",
 ]
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
