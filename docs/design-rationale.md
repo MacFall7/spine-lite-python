@@ -14,9 +14,11 @@ Default for new uv projects, full PEP 621 support, integrates cleanly with `uv b
 
 PEP 639 superseded the legacy table form. `license = "MIT"` plus `license-files = ["LICENSE"]` is the current standard.
 
-## `uv.lock` not committed
+## `uv.lock` is committed
 
-Spine-lite is a library. Downstream consumers resolve their own dependency tree. CI installs from `pyproject.toml` directly. If reproducibility on CI ever becomes a concern, the lockfile can be added later — committing it is a one-way door, omitting it is not.
+Initially omitted on the standard library/lockfile dichotomy, but `astral-sh/setup-uv@v3` with `enable-cache: true` matches its default cache key against `uv.lock`; without one, every CI job dies at the setup step. Tracking the lockfile gives CI a deterministic install and a stable cache key.
+
+Downstream consumers still resolve their own dependency tree from `pyproject.toml` — the lockfile only governs this repo's dev/CI environment. Refresh with `uv lock --upgrade` periodically; commit the result so CI sees the updated graph.
 
 ## CI matrix: 3.11 / 3.12 / 3.13 × Linux / macOS / Windows
 

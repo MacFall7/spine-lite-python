@@ -42,6 +42,5 @@ Thumbs.db
 # Docs build output
 site/
 
-# uv tool cache (uv.lock itself is intentionally not tracked; see docs/design-rationale.md)
+# uv tool cache (uv.lock IS tracked; see docs/design-rationale.md)
 .uv/
-uv.lock
