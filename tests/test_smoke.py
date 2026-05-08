@@ -20,3 +20,17 @@ def test_public_surface_excludes_private_names() -> None:
 
     for name in spine_lite.__all__:
         assert not name.startswith("_") or name == "__version__"
+
+
+def test_phase_two_three_modules_import_cleanly() -> None:
+    """Every scaffolded module must at least parse and import."""
+    import importlib
+
+    for module_name in (
+        "spine_lite.classifier",
+        "spine_lite.manifest",
+        "spine_lite.posture",
+        "spine_lite.receipt",
+        "spine_lite.hook",
+    ):
+        importlib.import_module(module_name)
