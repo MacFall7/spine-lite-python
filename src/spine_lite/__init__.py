@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import logging
 
+from spine_lite.classifier import Decision, ToolCall, classify
 from spine_lite.effects import PRECEDENCE, Effect, most_restrictive
 from spine_lite.exceptions import (
     ClassificationError,
@@ -24,6 +25,7 @@ __version__ = "0.1.0a0"
 __all__ = [
     "PRECEDENCE",
     "ClassificationError",
+    "Decision",
     "Effect",
     "HookError",
     "Manifest",
@@ -31,8 +33,10 @@ __all__ = [
     "Posture",
     "PostureError",
     "SpineLiteError",
+    "ToolCall",
     "ToolDefinition",
     "__version__",
+    "classify",
     "most_restrictive",
     "parse_manifest",
 ]
