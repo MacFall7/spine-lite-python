@@ -1,0 +1,59 @@
+{
+  "manifest": "manifest_basic.json",
+  "cases": [
+    {
+      "name": "read-only file read",
+      "tool": "read_file",
+      "expected": {
+        "tool": "read_file",
+        "effects": ["read"],
+        "most_restrictive": "read"
+      }
+    },
+    {
+      "name": "scoped write",
+      "tool": "write_file",
+      "expected": {
+        "tool": "write_file",
+        "effects": ["write"],
+        "most_restrictive": "write"
+      }
+    },
+    {
+      "name": "network read collapses to network",
+      "tool": "fetch_url",
+      "expected": {
+        "tool": "fetch_url",
+        "effects": ["network", "read"],
+        "most_restrictive": "network"
+      }
+    },
+    {
+      "name": "subprocess execute",
+      "tool": "shell_run",
+      "expected": {
+        "tool": "shell_run",
+        "effects": ["execute"],
+        "most_restrictive": "execute"
+      }
+    },
+    {
+      "name": "fork-and-detach spawn",
+      "tool": "shell_daemon",
+      "expected": {
+        "tool": "shell_daemon",
+        "effects": ["spawn"],
+        "most_restrictive": "spawn"
+      }
+    },
+    {
+      "name": "destructive dominates network",
+      "tool": "git_force_push",
+      "expected": {
+        "tool": "git_force_push",
+        "effects": ["destructive", "network"],
+        "most_restrictive": "destructive"
+      }
+    }
+  ]
+}

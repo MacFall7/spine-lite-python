@@ -1,0 +1,29 @@
+{
+  "tools": {
+    "all_classes": {
+      "name": "all_classes",
+      "description": "Synthetic tool exercising every effect class and posture.",
+      "effects": [
+        "destructive",
+        "spawn",
+        "execute",
+        "network",
+        "write",
+        "read"
+      ],
+      "permitted_postures": [
+        "interactive",
+        "autonomous",
+        "dry_run",
+        "locked"
+      ],
+      "require_confirmation": true,
+      "metadata": {
+        "category": "synthetic",
+        "tags": ["coverage", "reference"],
+        "owner": "spine-lite",
+        "audit_priority": "high"
+      }
+    }
+  }
+}

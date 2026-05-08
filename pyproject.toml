@@ -132,6 +132,13 @@ pretty = true
 module = ["typer.*"]
 ignore_missing_imports = false
 
+# Hypothesis's @given / @settings decorators don't propagate types in a way
+# mypy --strict accepts as "typed" — disabling disallow_untyped_decorators
+# only inside the test suite keeps strict typing on the runtime modules.
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_decorators = false
+
 [tool.pytest.ini_options]
 minversion = "8.0"
 addopts = [
