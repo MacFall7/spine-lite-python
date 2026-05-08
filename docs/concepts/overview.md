@@ -38,7 +38,7 @@ The PreToolUse **hook** is just an I/O wrapper that maps stdin/stdout to and fro
 
 ## What's closed
 
-The effects taxonomy is closed at six classes. Adding a class is a project-level decision that requires updating the precedence ordering, the parity tests against the TypeScript reference, and the docstrings. It is not a runtime extension point.
+The effects taxonomy is closed at six classes. Adding a class is a project-level decision that requires updating the precedence ordering, the parity tests, the porting-notes log, and the docstrings. It is not a runtime extension point.
 
 This is a feature, not a limitation. A taxonomy that grows at runtime is a taxonomy that drifts. The six classes were chosen to cover every observable side effect a tool call can produce. If something looks like a seventh class, it's probably an existing class with new arguments.
 

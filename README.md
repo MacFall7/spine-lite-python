@@ -7,7 +7,7 @@
 
 Deterministic policy and effects runtime for LLM tool calls.
 
-A Python port of [M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite). Same closed effects taxonomy, same precedence rules, same posture state machine — typed, tested, packaged.
+Six-class effects taxonomy on state × boundary × reversibility axes. Ordinal precedence. Content-addressable receipts. Wires into Claude Code as a PreToolUse hook (Phase 3); usable anywhere you can shell out to a subprocess. Sibling project to [M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite) — see [Porting Notes](docs/explanation/porting-notes.md) for the relationship.
 
 ## What it does
 
@@ -20,8 +20,8 @@ The runtime is offline by design — no clocks, no randomness, no network, no LL
 | Phase | Scope | Version | State |
 |-------|-------|---------|-------|
 | 1 | Scaffold, taxonomy, exceptions, CLI surface, CI matrix, docs | `v0.1.0a0` | Shipped 2026-05-08 |
-| 2 | Manifest schema, classifier with parity tests | `v0.2.0a0` | Pending |
-| 3 | Posture state machine, receipts, hook adapter, end-to-end | `v0.3.0a0` | Pending |
+| 2 | Manifest schema, classifier, Posture enum, parity + hypothesis tests | `v0.2.0a0` | Shipped 2026-05-08 |
+| 3 | Posture transition functions, receipts, hook adapter, end-to-end | `v0.3.0a0` | Pending |
 
 See [`RECEIPTS.md`](RECEIPTS.md) for build progress and [docs/history/phase-1.md](https://macfall7.github.io/spine-lite-python/history/phase-1/) for the Phase 1 narrative.
 

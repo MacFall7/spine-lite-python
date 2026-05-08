@@ -57,7 +57,7 @@ Anything finer is a manifest concern (the *which* file, the *which* host), not a
 A taxonomy that grows at runtime is a taxonomy that drifts. Adding a seventh class would require:
 
 1. Updating `Effect` and `PRECEDENCE` in `effects.py`.
-2. Updating the parity tests against the TypeScript reference.
+2. Updating the parity tests and the porting-notes log.
 3. Updating every consumer that exhaustively matches on `Effect`.
 4. A migration note in `CHANGELOG.md` and `docs/explanation/porting-notes.md`.
 5. Project-level sign-off — recorded as a HALT against [`CLAUDE.md`](https://github.com/MacFall7/spine-lite-python/blob/main/CLAUDE.md).
@@ -75,4 +75,4 @@ The `effects` module contains zero I/O, zero clocks, zero randomness. This is en
 - [Concepts / Overview](overview.md) — where the taxonomy fits in the pipeline.
 - [Reference / API](../reference/api.md#effects) — the auto-generated `Effect`, `PRECEDENCE`, `most_restrictive` reference.
 - [Reference / Glossary](../reference/glossary.md) — term-by-term definitions.
-- [Explanation / Porting Notes](../explanation/porting-notes.md) — how the Python form relates to the TypeScript reference.
+- [Explanation / Porting Notes](../explanation/porting-notes.md) — design history and the relationship to the sibling project.

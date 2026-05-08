@@ -10,7 +10,7 @@ A manifest is the policy document for a tool. It declares:
 - The set of effects each invocation can produce.
 - Posture constraints — under which postures the tool may be invoked, and under which it must be refused.
 
-Manifests are validated as Pydantic v2 models and round-trip the TypeScript reference fixtures byte-for-byte after JSON normalisation.
+Manifests are validated as Pydantic v2 models and round-trip authored fixtures byte-for-byte after JSON normalisation.
 
 ## Classifier (Phase 2)
 
@@ -27,18 +27,18 @@ Pure function. Given a tool call and a manifest, returns a `Decision` carrying:
 
 No I/O. No clocks. Same input → same output, every time.
 
-## Posture state machine (Phase 3)
+## Posture state machine
 
-A posture is the current operational mode. Transitions are pure value-in-value-out functions; no hidden state.
+The closed `Posture` enum lands in Phase 2 (manifest validation depends on it). Transition functions land in Phase 3.
 
-Postures (planned, subject to refinement against the TypeScript reference):
+Posture is the current operational mode. Transitions (Phase 3) are pure value-in-value-out functions; no hidden state.
 
-| Posture | Meaning |
-|---|---|
-| `INTERACTIVE` | Operator is at the keyboard; ambiguous calls escalate to a prompt. |
-| `AUTONOMOUS` | No operator in the loop; ambiguous calls fail closed. |
-| `DRY_RUN` | Classification only; no `WRITE`/`NETWORK`/`EXECUTE`/`SPAWN`/`DESTRUCTIVE` effects fire. |
-| `LOCKED` | Refuse everything except explicitly allow-listed read-only calls. |
+| Posture | Value | Meaning |
+|---|---|---|
+| `INTERACTIVE` | `"interactive"` | Operator is at the keyboard; ambiguous calls escalate to a prompt. |
+| `AUTONOMOUS` | `"autonomous"` | No operator in the loop; ambiguous calls fail closed. |
+| `DRY_RUN` | `"dry_run"` | Classification only; no `WRITE`/`NETWORK`/`EXECUTE`/`SPAWN`/`DESTRUCTIVE` effects fire. |
+| `LOCKED` | `"locked"` | Refuse everything except explicitly allow-listed read-only calls. |
 
 Transitions are total — every `(posture, decision)` pair has a defined next posture or a `PostureError`. There are no implicit transitions.
 
@@ -81,4 +81,4 @@ echo $?  # 0 = allow, non-zero = deny
 
 - [Concepts / Overview](overview.md) — pipeline shape.
 - [How-To / Wire into Claude Code](../how-to/wire-claude-code.md) — operator runbook.
-- [Explanation / Porting Notes](../explanation/porting-notes.md) — how this maps to the TypeScript reference.
+- [Explanation / Porting Notes](../explanation/porting-notes.md) — design history and the relationship to the sibling project.

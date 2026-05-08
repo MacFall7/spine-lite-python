@@ -1,0 +1,52 @@
+{
+  "tools": {
+    "read_file": {
+      "name": "read_file",
+      "description": "Read a file from disk.",
+      "effects": ["read"],
+      "permitted_postures": null,
+      "require_confirmation": false,
+      "metadata": {}
+    },
+    "write_file": {
+      "name": "write_file",
+      "description": "Write content to a file.",
+      "effects": ["write"],
+      "permitted_postures": null,
+      "require_confirmation": false,
+      "metadata": {}
+    },
+    "fetch_url": {
+      "name": "fetch_url",
+      "description": "Fetch a URL.",
+      "effects": ["network", "read"],
+      "permitted_postures": null,
+      "require_confirmation": false,
+      "metadata": {}
+    },
+    "shell_run": {
+      "name": "shell_run",
+      "description": "Run a shell command and wait for completion.",
+      "effects": ["execute"],
+      "permitted_postures": ["interactive", "autonomous"],
+      "require_confirmation": false,
+      "metadata": {}
+    },
+    "shell_daemon": {
+      "name": "shell_daemon",
+      "description": "Spawn a long-running daemon process.",
+      "effects": ["spawn"],
+      "permitted_postures": ["interactive"],
+      "require_confirmation": true,
+      "metadata": {}
+    },
+    "git_force_push": {
+      "name": "git_force_push",
+      "description": "Force push, irreversible if remote was rewritten.",
+      "effects": ["destructive", "network"],
+      "permitted_postures": ["interactive"],
+      "require_confirmation": true,
+      "metadata": {}
+    }
+  }
+}

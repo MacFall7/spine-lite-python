@@ -112,3 +112,176 @@ All 10 items clear. **Phase 1 closed.**
 - None. Phase 2 (manifest + classifier, ~5 working days, target `v0.2.0a0`) is gated on operator go per `CLAUDE.md`.
 
 **Next:** Halt for Mac at the Phase 1 → Phase 2 transition. Per blueprint §11, completion of Phase 1 unblocks the Braintrust application thread on the operator's side.
+
+---
+
+### Phase 2 Day 1 Opening — 2026-05-08
+
+Phase 2 opened with a §9 halt. The halt and the operator's resolution are recorded here verbatim for the run-registry trail.
+
+**§9 HALT (verbatim):**
+
+```
+HALT: Reference repo's spec diverges from Phase 1's invariants in ways that make
+      a straight parity port mechanically impossible.
+
+Context:
+- The blueprint and CLAUDE.md describe a "TS reference" at MacFall7/M87-Spine-lite.
+- WebFetch confirms the repo exists and is public, but it's implemented in Python
+  (hooks/guard.py, hooks/governor.py), not TypeScript. The "TS reference" framing
+  in the blueprint is stale.
+- Bigger issue: the reference's six-class taxonomy is *categorically different*
+  from what shipped in Phase 1.
+
+Reference (M87-Spine-lite, README verbatim):                 │  Phase 1 (spine-lite-python):
+                                                             │
+  SAFE_READ          (risk 0.00, auto-approve)               │  READ
+  SHELL_SAFE         (risk 0.01, auto-approve)               │  WRITE
+  SHELL_MUTATING     (risk 0.04, auto-approve)               │  NETWORK
+  SCOPED_WRITE       (risk 0.02, auto-approve)               │  EXECUTE
+  RESTRICTED_WRITE   (risk 0.08, manual approval)            │  SPAWN
+  SHELL_DANGEROUS    (risk 0.10, blocked)                    │  DESTRUCTIVE
+
+  + numeric risk scores                                      │  + ordinal precedence
+  + per-class default disposition                            │  + most_restrictive collapse
+  + 5-step deny→network→safe→mutating→default pipeline       │  + classifier returns Decision
+  + 7 invariants about governance philosophy                 │  + 7 invariants about implementation
+
+- These are not "the same six things with different labels." The reference draws axes
+  on shell-vs-file and risk-magnitude; Phase 1 draws axes on state-vs-boundary-vs-
+  reversibility. There's no NETWORK in the reference; there's no SAFE_READ vs
+  SHELL_SAFE distinction in Phase 1.
+- Phase 1 shipped 2026-05-08 as v0.1.0a0, merged via PR #1, repo public, Pages live.
+  Mac signed off on the action-centric taxonomy and the 7 implementation invariants
+  in CLAUDE.md.
+- This is exactly the §9 stop condition: "TS reference and Python implementation
+  diverge semantically and you cannot determine which is correct." Except now
+  it's clear the divergence isn't fixable by translation — it's a different design.
+
+Options:
+1. Treat the reference as a sibling project, not a parity target. Phase 2 implements
+   manifest + classifier from the contract document already drafted in
+   docs/concepts/posture-and-hooks.md and docs/how-to/wire-claude-code.md (author-
+   from-spec, same pattern as Phase 1). Add a porting-notes entry recording that
+   the reference informed the design but is not the byte-equality target — its
+   taxonomy and ours are categorically different. Parity tests become "round-trip
+   our own fixtures" rather than "byte-equal against external fixtures."
+
+2. Retract Phase 1's taxonomy. Re-tag v0.1.0a0 as deprecated, bump to v0.1.1a0
+   with the reference's SAFE_READ/SHELL_*/SCOPED_WRITE/RESTRICTED_WRITE/SHELL_DANGEROUS,
+   then resume Phase 2 against that baseline. Brings byte-for-byte parity back
+   on the table.
+
+3. Both taxonomies, with a translation layer. Phase 1 names stay public; manifest
+   schema accepts reference-style names and maps them. Mapping is judgment-heavy
+   (does SHELL_SAFE map to EXECUTE or to READ depending on the call?), so parity
+   becomes case-by-case rather than mechanical.
+
+4. The reference repo isn't actually the spec — CLAUDE.md is, and you confirmed
+   that in Phase 1 by directing "FLIP TO OPTION 1: author scaffold from blueprint
+   spec." Phase 2 follows the same pattern. The reference is consulted as
+   inspiration, cited in porting-notes, but isn't a parity gate.
+
+Recommendation: Option 1 (or equivalently Option 4 — they're the same path with
+different labels).
+
+Awaiting:
+- Pick 1, 2, 3, or 4 for the parity question.
+- (a) or (b) for the Posture enum question.
+- Anything else worth logging in porting-notes before Phase 2 starts.
+```
+
+**Operator resolution (verbatim):**
+
+```
+DECISION ON HALT:
+
+Parity question: Option 1. Reference (MacFall7/M87-Spine-lite) is a sibling project,
+not a parity target. Phase 1's taxonomy is correct and final. spine-lite-python
+authors from spec, same pattern as Phase 1.
+
+Posture question: sub-option (a). Ship Posture enum in Phase 2 with manifest
+validation. Closed-enum + one-line __all__ addition.
+
+BLUEPRINT CORRECTION (do this in commit 1 of Phase 2 before code lands):
+
+Update CLAUDE.md and docs/explanation/porting-notes.md:
+- Reference repo is a Python sibling, not "TS reference"
+- Reference is informational, not a parity target
+- spine-lite-python's design rationale: broader taxonomy (state × boundary ×
+  reversibility axes), ordinal precedence over risk scores, suitable for any LLM
+  tool call not just bash
+- Record that the reference's taxonomy (SAFE_READ / SHELL_SAFE / SHELL_MUTATING /
+  SCOPED_WRITE / RESTRICTED_WRITE / SHELL_DANGEROUS + numeric risk scores +
+  5-step pipeline) was reviewed and explicitly not adopted
+
+Coverage 100% on manifest.py, classifier.py, posture.py (enum scope only).
+Six-commit Conventional Commits shape preserved (the blueprint correction is
+commit 1, then 5 functional commits).
+
+Begin from blueprint correction commit. Halt at exit gate.
+```
+
+**What landed in commit 1 of Phase 2:**
+
+- `CLAUDE.md` mission rewritten to drop "TS reference" framing; sibling project recorded as informational, not a parity target.
+- `docs/explanation/porting-notes.md` reframed from "translation log" to "design history" with a Sibling Project section, a Phase 2 opening entry recording this halt and resolution, and a Phase 1 entry pinning the taxonomy as `spine-lite-python`'s spec.
+- `docs/concepts/posture-and-hooks.md` updated to remove the "subject to refinement" caveat from the posture table and pin the four members (`INTERACTIVE`, `AUTONOMOUS`, `DRY_RUN`, `LOCKED`) with their string values.
+- `docs/explanation/architecture.md` reference-implementation paragraph rewritten as a sibling-project note.
+- `docs/explanation/faq.md` "Why Python after TypeScript?" question replaced with "How does this relate to M87-Spine-lite?", plus three other in-place corrections.
+- `docs/concepts/effects-taxonomy.md`, `docs/concepts/overview.md`, `docs/how-to/contribute.md`, `docs/how-to/use-the-api.md`, `docs/reference/glossary.md`: surgical edits to drop TS-reference framing.
+- `README.md` and `docs/index.md` headlines reworded: `spine-lite-python` is described directly, sibling project credited but not framed as a port target.
+- This receipt entry.
+
+**Next:** Phase 2 functional commits begin (Posture → manifest → classifier → fixtures+tests → release+exit-receipt).
+
+---
+
+### Phase 2 Exit Receipt — 2026-05-08
+
+**Repo:** spine-lite-python branch `claude/setup-project-structure-3YeiT`, six commits ahead of `main`. Target tag: `v0.2.0a0`.
+**Duration:** ~2 hours (continuation of the same Claude Code Web session).
+
+**Tasks completed:**
+
+- **Blueprint correction (`111f34c`).** `MacFall7/M87-Spine-lite` reframed as a sibling project, not a parity target. CLAUDE.md mission rewritten; porting-notes.md restructured from "translation log" to "design history" with a Phase 2 opening entry recording the §9 halt and operator resolution; surgical edits across nine doc pages drop the stale TS-reference framing.
+- **Posture enum (`600d870`).** Closed StrEnum with four members pinned by `docs/concepts/posture-and-hooks.md`: `INTERACTIVE`, `AUTONOMOUS`, `DRY_RUN`, `LOCKED`. Added to `__all__`. Phase 3 will add the transition functions; the enum lands now so the manifest schema can validate posture constraints against a closed set.
+- **Manifest schema (`9ed313d`).** Pydantic v2 models `ToolDefinition` and `Manifest` (frozen, `extra="forbid"`). Effects and postures canonicalised on construction (deduplicated and sorted by enum-declaration order) for byte-stable JSON round-trip. `parse_manifest()` accepts dicts, JSON strings, or JSON bytes; wraps `ValidationError` as `ManifestError` with the original attached as `__cause__`. Tests cover canonicalisation, frozen-model immutability, schema rejection, and round-trip stability.
+- **Classifier (`67470ff`).** `classify(tool_call, manifest) -> Decision` is a pure function. `ToolCall` and `Decision` are frozen + slotted + kw-only dataclasses. `Decision` carries the canonical effects tuple, the dominant effect under `PRECEDENCE`, and a byte-stable rationale string. Tool-not-declared raises `ManifestError`. Phase 2 doesn't refine on the tool call's arguments — manifest is the spec.
+- **Fixtures + parity + hypothesis (`ef32a5f`).** Four authored fixtures in `tests/fixtures/`: `manifest_minimal.json`, `manifest_basic.json`, `manifest_full.json`, `decisions_basic.json`. Parametrized tests confirm every fixture loads and round-trips JSON byte-stably. Decision parity test walks each case in `decisions_basic.json` against `manifest_basic.json`. Hypothesis property tests at 1,000 examples each cover determinism, dominance, manifest fidelity, byte-stable rationale, manifest round-trip stability, and argument independence.
+- **Release (this commit).** `pyproject.toml` and `__init__.py` bumped to `0.2.0a0`. CHANGELOG `[0.2.0a0]` section added. README status grid updated. Phase 2 history page added. mkdocs nav extended.
+
+**Verification (local, in sandbox):**
+
+- `ruff check`: pass
+- `ruff format --check`: pass
+- `mypy --strict src tests`: pass, 16 source files clean
+- `pytest`: 99 / 99 passing
+- Coverage: 100% on every runtime module (45 → 106 statements; 0 misses)
+- `mkdocs build --strict`: pass
+- Hypothesis: 6 properties × 1,000 examples each, ~50 s total
+
+**Phase 2 exit gate:**
+
+| # | Item | State |
+|---|------|-------|
+| 1 | `manifest.py` 100% coverage | ✓ (36 stmts, 6 branches, 0 miss) |
+| 2 | `classifier.py` 100% coverage | ✓ (18 stmts, 0 miss) |
+| 3 | `posture.py` 100% coverage on enum scope | ✓ (7 stmts, 0 miss) |
+| 4 | Authored fixtures in `tests/fixtures/` | ✓ (4 files) |
+| 5 | Parametrized parity tests against fixtures | ✓ |
+| 6 | Hypothesis property tests, ≥ 1,000 examples each | ✓ (6 properties) |
+| 7 | mypy `--strict` clean | ✓ |
+| 8 | CI green on all 9 matrix cells | (pending push verification) |
+| 9 | CHANGELOG entry for `v0.2.0a0` | ✓ |
+| 10 | All commits in Conventional Commits format | ✓ |
+| 11 | This receipt | ✓ |
+
+10 of 11 verifiable in sandbox; CI verification on push remains operator-side per the established workflow.
+
+**Open items / halts:**
+
+- None. Phase 3 (posture transitions, receipt, hook, full CLI; target `v0.3.0a0`) is gated on operator go.
+- The PyPI publish that the blueprint marks for end of Phase 3 remains an explicit operator decision; no auto-publish.
+
+**Next:** Halt for Mac at the Phase 2 → Phase 3 transition. Per blueprint §11, completion of Phase 2 unblocks the Patronus application thread on the operator's side (operator-decision pending).

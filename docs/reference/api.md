@@ -40,15 +40,20 @@ from spine_lite import (
         - PostureError
         - HookError
 
+## Posture
+
+::: spine_lite.posture
+    options:
+      members:
+        - Posture
+
 ## Phase 2 / Phase 3 modules
 
-Stub modules with phase-pinning docstrings. The reference will expand as the implementations land.
+Stubs and partials with phase-pinning docstrings. The reference expands as implementations land.
 
 ::: spine_lite.manifest
 
 ::: spine_lite.classifier
-
-::: spine_lite.posture
 
 ::: spine_lite.receipt
 

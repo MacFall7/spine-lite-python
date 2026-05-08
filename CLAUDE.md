@@ -4,7 +4,7 @@ Operating manual for Claude Code sessions in this repo.
 
 ## Mission
 
-Python port of M87-Spine-lite (TypeScript). Deterministic policy and effects runtime for LLM tool calls. Public API and observable semantics must mirror the TypeScript reference within the closed six-class taxonomy.
+Deterministic policy and effects runtime for LLM tool calls. Public API and observable semantics are defined by the architectural invariants below; the sibling project at [MacFall7/M87-Spine-lite](https://github.com/MacFall7/M87-Spine-lite) is informational and not a parity target. See `docs/explanation/porting-notes.md` for the relationship.
 
 ## Authority
 
@@ -19,7 +19,6 @@ Mac decides — halt and ask:
 - Anything in `src/spine_lite/__init__.py`'s `__all__`.
 - New dependencies beyond `pyproject.toml`.
 - Phase boundary transitions (1→2, 2→3).
-- Semantic divergence from the TypeScript reference.
 - PyPI publish, repo visibility, GitHub Pages enablement.
 
 ## Architectural invariants
@@ -56,7 +55,7 @@ All three green or no commit. Before any push, also `coverage` and `docs`. Cover
 Halt and report when:
 
 - A phase exit gate item is unclear.
-- Python and TS reference diverge semantically and you can't tell which is right.
+- The architectural invariants above conflict with new code or new decisions.
 - A test fails you can't explain in 15 minutes.
 - You're about to add a dependency.
 - You're about to modify `__all__`.
@@ -75,14 +74,14 @@ Awaiting: <decision needed>
 ## Phase plan
 
 - **Phase 1** — scaffold + CI + docs deploy. Tags `v0.1.0a0`.
-- **Phase 2** — `manifest` and `classifier` complete. Pydantic v2 models, parity tests against TS reference fixtures, `hypothesis` for invariants. Tags `v0.2.0a0`.
+- **Phase 2** — `manifest`, `classifier`, and the closed `Posture` enum complete. Pydantic v2 models, round-trip parity tests against authored fixtures, `hypothesis` for invariants. Tags `v0.2.0a0`.
 - **Phase 3** — `posture`, `receipt`, `hook`, `cli` complete. End-to-end PreToolUse integration with Claude Code. Tags `v0.3.0a0`.
 
 Phase exit gates and receipts live in `RECEIPTS.md`.
 
 ## Scope
 
-- In-repo only. Don't touch the TypeScript reference (read-only spec).
+- In-repo only. Don't touch the sibling project at MacFall7/M87-Spine-lite (informational, not a parity target).
 - Don't invoke Patronus, Braintrust, or Arize SDKs (operator-decision pending).
 - No network calls in tests. No LLM calls anywhere in the runtime.
 

@@ -123,7 +123,7 @@ json.dumps(decision_summary, default=str)
 ## Anti-patterns
 
 - **Don't** define your own ordering of `Effect`. Use `PRECEDENCE`. There is one canonical ordering and every comparison should resolve through it.
-- **Don't** add a seventh `Effect` member at runtime. The taxonomy is closed; subclassing or monkey-patching `Effect` will break parity tests against the TypeScript reference.
+- **Don't** add a seventh `Effect` member at runtime. The taxonomy is closed; subclassing or monkey-patching `Effect` will break the closed-taxonomy invariant tests.
 - **Don't** catch bare `Exception`. Use `SpineLiteError` if you mean "any error from this package" and a specific subclass otherwise.
 - **Don't** rely on stringly-typed effect names from outside the runtime. Convert to `Effect` at the boundary so a typo fails on import, not on first use.
 
