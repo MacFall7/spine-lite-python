@@ -285,3 +285,65 @@ Begin from blueprint correction commit. Halt at exit gate.
 - The PyPI publish that the blueprint marks for end of Phase 3 remains an explicit operator decision; no auto-publish.
 
 **Next:** Halt for Mac at the Phase 2 → Phase 3 transition. Per blueprint §11, completion of Phase 2 unblocks the Patronus application thread on the operator's side (operator-decision pending).
+
+---
+
+### Phase 3 Exit Receipt — 2026-05-09
+
+**Repo:** spine-lite-python branch `claude/setup-project-structure-3YeiT`, six commits ahead of `main` (which sits at `e5e37bf` after the operator's Phase 2 ff-merge). Target tag: `v0.3.0a0`.
+**Duration:** ~2.5 hours (continuation of the same Claude Code Web session).
+
+**Tasks completed:**
+
+- **attr_list docs hygiene (`6cdcde5`).** Enabled the `attr_list` mkdocs extension required by the badge-style buttons on `docs/index.md`.
+- **Posture state machine (`29bfb63`).** `Disposition` closed StrEnum with `ALLOW`/`DENY`/`ESCALATE`. `transition(current, target)` enforces a hand-encoded transition table (`INTERACTIVE` is the hub, `LOCKED` only unlocks to `INTERACTIVE`). `evaluate(posture, definition, decision)` is the pure policy: posture allow-list first, then `LOCKED`/`DRY_RUN` (only `READ` permitted), then `require_confirmation` (escalates under `INTERACTIVE`, denies under `AUTONOMOUS`), otherwise allows. 47 unit tests cover every transition cell and every posture × effect combination.
+- **Receipt (`7cd329b`).** Frozen + slotted + kw-only `@dataclass` with `to_canonical_dict`, `to_canonical_json` (sort_keys, ensure_ascii=False, compact separators), and `content_hash` (SHA-256 of the canonical JSON). 21 unit tests + three hypothesis property tests at 1,000 examples each cover byte-stability, hash determinism, and the `sha256(canonical_json) == content_hash` identity.
+- **Hook adapter (`0d92074`).** `run_hook(manifest, payload, *, posture)` is the testable core; `main(manifest, *, stdin, stdout, stderr, posture)` is the I/O wrapper. Exit-code contract: `0`/`1`/`2`/`64`/`65`. 21 unit tests cover happy paths per posture, every payload error mode, and end-to-end byte-stability.
+- **Full CLI (`d3e6cb6`).** `validate-manifest`, `classify`, and `hook` subcommands with `Annotated`-style typer parameters. Three test layers: CliRunner smoke + integration, posture × disposition matrix, and subprocess-driven E2E against `python -m spine_lite.cli`. Five posture × tool combinations + byte-stability + version smoke. 22 new tests on top of the existing CLI tests.
+- **Release (this commit).** `pyproject.toml` and `__init__.py` bumped to `0.3.0a0`. Smoke test pinned to the new version. CHANGELOG `[0.3.0a0]` section. README status grid marks Phase 3 shipped. `docs/history/phase-3.md` narrates the build. mkdocs nav extended.
+
+**Public surface added at `v0.3.0a0`:**
+
+- `Disposition` (closed StrEnum)
+- `transition` (function)
+- `evaluate` (function)
+- `Receipt` (dataclass)
+
+Hook entry points (`run_hook`, `main`) remain accessible via `from spine_lite.hook import ...`; the canonical operator entry is the `spine-lite hook` console script.
+
+**Verification (local, in sandbox):**
+
+- `ruff check`: pass
+- `ruff format --check`: pass
+- `mypy --strict src tests`: pass, 19 source files clean
+- `pytest`: 209 / 209 passing
+- Coverage: 100% on every runtime module (248 statements, 30 branches, 0 misses)
+- `mkdocs build --strict`: pass
+- Hypothesis: 9 properties × 1,000 examples each (~3 minutes total)
+- E2E subprocess tests: 7 cases (5 posture × tool dispositions + byte-stability + version)
+
+**Phase 3 exit gate:**
+
+| # | Item | State |
+|---|------|-------|
+| 1 | `posture.py` (transitions + evaluate) 100% coverage | ✓ (34 stmts, 14 branches, 0 miss) |
+| 2 | `receipt.py` 100% coverage | ✓ (22 stmts, 0 miss) |
+| 3 | `hook.py` 100% coverage | ✓ (54 stmts, 6 branches, 0 miss) |
+| 4 | `cli.py` 100% coverage | ✓ (49 stmts, 0 miss) |
+| 5 | Integration tests for every subcommand | ✓ |
+| 6 | E2E smoke via installed entry point | ✓ (7 subprocess cases) |
+| 7 | mypy `--strict` clean | ✓ |
+| 8 | CI green on all 9 matrix cells | (pending push verification) |
+| 9 | CHANGELOG entry for `v0.3.0a0` | ✓ |
+| 10 | All commits in Conventional Commits format | ✓ |
+| 11 | This receipt | ✓ |
+
+10 of 11 verifiable in sandbox; CI verification on push is operator-side per the established workflow.
+
+**Open items:**
+
+- Real Claude Code wiring smoke (install in fresh venv, register the hook, observe a deny on a DESTRUCTIVE call) is out of scope for the build sandbox — performed via subprocess against `python -m spine_lite.cli`, which is the closest faithful test the environment supports.
+- PyPI publish for `v0.3.0a0` is the explicit operator decision the blueprint reserves for this gate; no auto-publish from this commit.
+- Per blueprint §11, Phase 3 completion unblocks the Arize Solutions application thread on the operator's side (operator-decision pending).
+
+**Next:** Halt for Mac at the Phase 3 exit gate. The build is feature-complete against the blueprint plan. PyPI publish, if approved, follows operator instructions.

@@ -21,7 +21,7 @@ The runtime is offline by design — no clocks, no randomness, no network, no LL
 |-------|-------|---------|-------|
 | 1 | Scaffold, taxonomy, exceptions, CLI surface, CI matrix, docs | `v0.1.0a0` | Shipped 2026-05-08 |
 | 2 | Manifest schema, classifier, Posture enum, parity + hypothesis tests | `v0.2.0a0` | Shipped 2026-05-08 |
-| 3 | Posture transition functions, receipts, hook adapter, end-to-end | `v0.3.0a0` | Pending |
+| 3 | Posture transitions, Disposition, Receipt, hook adapter, full CLI, E2E | `v0.3.0a0` | Shipped 2026-05-09 |
 
 See [`RECEIPTS.md`](RECEIPTS.md) for build progress and [docs/history/phase-1.md](https://macfall7.github.io/spine-lite-python/history/phase-1/) for the Phase 1 narrative.
 

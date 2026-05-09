@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "spine-lite"
-version = "0.2.0a0"
+version = "0.3.0a0"
 description = "Deterministic policy and effects runtime for LLM tool calls."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -109,9 +109,12 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["D", "S101", "ANN", "PT011"]
+"tests/**" = ["D", "S101", "S603", "ANN", "PT011"]
 "noxfile.py" = ["D", "ANN"]
 "docs/**" = ["D"]
+# Typer introspects the type annotation at runtime to do Path validation,
+# so Path can't move to a TYPE_CHECKING block in cli.py.
+"src/spine_lite/cli.py" = ["TC003"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

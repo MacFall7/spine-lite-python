@@ -9,10 +9,10 @@ def test_package_imports() -> None:
     assert hasattr(spine_lite, "__version__")
 
 
-def test_version_is_phase_two_alpha() -> None:
+def test_version_is_phase_three_alpha() -> None:
     import spine_lite
 
-    assert spine_lite.__version__ == "0.2.0a0"
+    assert spine_lite.__version__ == "0.3.0a0"
 
 
 def test_public_surface_excludes_private_names() -> None:
