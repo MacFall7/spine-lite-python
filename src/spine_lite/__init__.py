@@ -21,7 +21,7 @@ from spine_lite.manifest import Manifest, ToolDefinition, parse_manifest
 from spine_lite.posture import Disposition, Posture, evaluate, transition
 from spine_lite.receipt import Receipt
 
-__version__ = "0.2.0a0"
+__version__ = "0.3.0a0"
 
 __all__ = [
     "PRECEDENCE",

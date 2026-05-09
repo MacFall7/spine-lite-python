@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "spine-lite"
-version = "0.2.0a0"
+version = "0.3.0a0"
 description = "Deterministic policy and effects runtime for LLM tool calls."
 readme = "README.md"
 requires-python = ">=3.11"

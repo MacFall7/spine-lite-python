@@ -68,6 +68,7 @@ nav:
   - History:
       - Phase 1: history/phase-1.md
       - Phase 2: history/phase-2.md
+      - Phase 3: history/phase-3.md
 
 markdown_extensions:
   - admonition

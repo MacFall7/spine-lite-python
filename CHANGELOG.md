@@ -4,6 +4,23 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.3.0a0] — 2026-05-09
+
+### Added
+
+- **Posture state machine.** `transition(current, target)` enforces an explicit transition table (`INTERACTIVE` is the hub; `LOCKED` only unlocks to `INTERACTIVE`; identity transitions are always allowed). `evaluate(posture, definition, decision)` is a pure function that maps a classified call under a posture to a `Disposition`.
+- **`Disposition` closed enum.** Members: `ALLOW`, `DENY`, `ESCALATE`. `ESCALATE` is only returned under `INTERACTIVE`; `AUTONOMOUS` fails closed (denies) on any tool flagged `require_confirmation=True`.
+- **`Receipt` dataclass** (frozen, slotted, kw-only). Carries the tool, arguments, canonical effects, dominant effect, rationale, posture, disposition, and the echoed `require_confirmation` flag. Three methods make it content-addressable: `to_canonical_dict()`, `to_canonical_json()` (sort_keys, ensure_ascii=False, compact separators), and `content_hash()` (SHA-256 of the canonical JSON). Same input → same hash, byte-stable across runs and platforms.
+- **PreToolUse hook adapter** (`spine_lite.hook`). `run_hook(manifest, payload, *, posture)` is the testable core: accepts `str` or `bytes` payloads, returns `(Receipt, exit_code)`. `main(manifest, *, stdin, stdout, stderr, posture)` is the I/O wrapper: reads stdin, writes the receipt's canonical JSON to stdout (or a structured error JSON on failure), returns the exit code per the documented contract (`0`/`1`/`2`/`64`/`65`).
+- **Full CLI surface.** `validate-manifest`, `classify`, and `hook` subcommands ship alongside the existing `version`. `Annotated`-style typer params throughout. Console-script invocation via `python -m spine_lite.cli` is the supported entry for Claude Code's PreToolUse hook.
+- **Integration and E2E tests.** Typer's `CliRunner` exercises every subcommand × posture × disposition combination; subprocess-based E2E tests run `python -m spine_lite.cli` against the authored fixtures, the closest equivalent in the build sandbox to the blueprint's "fresh-venv install + Claude Code wiring" smoke.
+- `Receipt`, `Disposition`, `transition`, `evaluate` added to `spine_lite.__all__`.
+- `attr_list` mkdocs extension enabled — required by the badge buttons on the docs landing page.
+
+### Changed
+
+- `mypy` per-file ignore: `src/spine_lite/cli.py` ignores `TC003` because typer introspects `Path` annotations at runtime to do path validation. `tests/**` ignores `S603` (subprocess calls constructed in-process from fixtures, not user input).
+
 ## [0.2.0a0] — 2026-05-08
 
 ### Added
@@ -36,6 +53,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - MkDocs documentation with `mkdocstrings`, deployable to GitHub Pages.
 - Repo governance file (`CLAUDE.md`) and build-progress receipt log (`RECEIPTS.md`).
 
-[Unreleased]: https://github.com/MacFall7/spine-lite-python/compare/v0.2.0a0...HEAD
+[Unreleased]: https://github.com/MacFall7/spine-lite-python/compare/v0.3.0a0...HEAD
+[0.3.0a0]: https://github.com/MacFall7/spine-lite-python/releases/tag/v0.3.0a0
 [0.2.0a0]: https://github.com/MacFall7/spine-lite-python/releases/tag/v0.2.0a0
 [0.1.0a0]: https://github.com/MacFall7/spine-lite-python/releases/tag/v0.1.0a0
