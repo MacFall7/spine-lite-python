@@ -27,7 +27,7 @@ See [`RECEIPTS.md`](RECEIPTS.md) for build progress and [docs/history/phase-1.md
 
 ## Install
 
-PyPI publish lands at the end of Phase 3. Until then, install from source:
+Not yet published to PyPI (confirmed 2026-07-10). Install from source:
 
 ```bash
 git clone https://github.com/MacFall7/spine-lite-python
@@ -40,12 +40,12 @@ Verify:
 
 ```bash
 uv run spine-lite version
-# 0.1.0a0
+# 0.3.0a0
 ```
 
 Need uv? `curl -LsSf https://astral.sh/uv/install.sh | sh` (Linux/macOS) or `winget install astral-sh.uv` (Windows).
 
-## Use today (Phase 1)
+## Quick example
 
 ```python
 from spine_lite import Effect, most_restrictive, SpineLiteError
@@ -62,7 +62,7 @@ most_restrictive({Effect.READ, Effect.WRITE, Effect.DESTRUCTIVE})
 issubclass(SpineLiteError, Exception)  # True
 ```
 
-The classifier and PreToolUse hook arrive in Phases 2 and 3. The taxonomy is the contract; everything else builds on it without changing it.
+The classifier and PreToolUse hook ship as of `v0.3.0a0` (Phases 2 and 3). The taxonomy is the contract; everything else builds on it without changing it.
 
 ## What this gives you
 
